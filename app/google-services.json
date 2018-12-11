@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "484579085728",
+    "firebase_url": "https://feedtastic-1c506.firebaseio.com",
+    "project_id": "feedtastic-1c506",
+    "storage_bucket": "feedtastic-1c506.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484579085728:android:5f1fb5275742c5f1",
+        "android_client_info": {
+          "package_name": "com.example.aletta.feedtastic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484579085728-7983t0k6bjnrmi1tl355eff75im14k8o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aletta.feedtastic",
+            "certificate_hash": "a8a9e91f9c69ebc07506b37f958b01050abe1a6c"
+          }
+        },
+        {
+          "client_id": "484579085728-a4k40u5elkkn0876gbg05om5vd19nq67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf3GBYPY-Ha7Xuzp7NyBz70OuyIQPiJIs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484579085728-a4k40u5elkkn0876gbg05om5vd19nq67.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
