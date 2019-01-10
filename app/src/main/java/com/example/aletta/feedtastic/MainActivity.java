@@ -1,83 +1,122 @@
 package com.example.aletta.feedtastic;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
-import com.example.aletta.feedtastic.registration.RegistrationFragment;
-import com.example.aletta.feedtastic.util.SharedPrefManager;
+import com.example.aletta.feedtastic.feed.fragments.FeedFragment;
+import com.example.aletta.feedtastic.registration.ProfileFragment;
 
-import com.example.aletta.feedtastic.models.User;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-import static com.example.aletta.feedtastic.login.LoginStatus.LOGGED;
-import static com.example.aletta.feedtastic.login.LoginStatus.LOGGED_OUT;
-import static com.example.aletta.feedtastic.util.Consants.USER;
+import static com.example.aletta.feedtastic.feed.model.ComicUtil.GENERAL;
+import static com.example.aletta.feedtastic.feed.model.ComicUtil.OWN;
+import static com.example.aletta.feedtastic.util.NavigationUtils.NAV_FROM_REG;
+import static com.example.aletta.feedtastic.util.NavigationUtils.NAV_TO_FEED;
 
 public class MainActivity extends AppCompatActivity {
 
 
-    private TextView mTextMessage;
+    @BindView(R.id.textMessage)
+    TextView mTextMessage;
+    @BindView(R.id.navigation)
+    BottomNavigationView bottomNavigationView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    ft.replace(R.id.container, ProfileFragment.newInstance());
+                    ft.addToBackStack("a");
+                    ft.commit();
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    ft.replace(R.id.container, FeedFragment.newInstance(GENERAL));
+                    ft.addToBackStack("a");
+                    ft.commit();
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                    ft.replace(R.id.container, FeedFragment.newInstance(OWN));
+                    ft.addToBackStack("a");
+                    ft.commit();
                     return true;
             }
             return false;
         }
     };
+    private String navTo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        if (checkUserLogged()) {
-        }
+        getIntentExtras();
 
-        initFragmentNavigation();
-
-
-        User user = new User("ali", "1234", false, 1);
-        SharedPrefManager.getInstance().setData("USER", user);
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        mTextMessage.setText(SharedPrefManager.getInstance().getData("USER", User.class).getUsername());
-
-
     }
 
-    private void initFragmentNavigation() {
+    @Override
+    public void onBackPressed() {
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container, RegistrationFragment.newInstance(SharedPrefManager.getInstance().getData(USER, User.class) .getUsername(),"b"));
-        ft.commit();
-    }
+        int count = getFragmentManager().getBackStackEntryCount();
 
-    private boolean checkUserLogged() {
-        if (SharedPrefManager.getInstance().getData(USER, User.class) != null) {
-            return LOGGED;
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
         } else {
-            return LOGGED_OUT;
+            getSupportFragmentManager().popBackStackImmediate();
+        }
+    }
+
+    private void getIntentExtras() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        if (getIntent() != null) {
+            if (getIntent().hasExtra(NAV_FROM_REG)) {
+                navTo = getIntent().getStringExtra(NAV_FROM_REG);
+            }
+        }
+
+        if (navTo != null && navTo.equals(NAV_TO_FEED)) {
+            ft.replace(R.id.container, FeedFragment.newInstance(GENERAL));
+            bottomNavigationView.setSelectedItemId(R.id.navigation_dashboard);
+            ft.addToBackStack("a");
+            ft.commit();
+        } else {
+            ft.replace(R.id.container, ProfileFragment.newInstance());
+            ft.addToBackStack("a");
+            ft.commit();
         }
 
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+    }
 }

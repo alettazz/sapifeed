@@ -1,4 +1,5 @@
 package com.example.aletta.feedtastic.registration;
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.aletta.feedtastic.MainActivity;
 import com.example.aletta.feedtastic.R;
-import com.example.aletta.feedtastic.profile.ProfileActivity;
+import com.example.aletta.feedtastic.models.User;
+import com.example.aletta.feedtastic.util.FireBaseUserManager;
+import com.example.aletta.feedtastic.util.SharedPrefManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
@@ -23,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 public class VerifyPhoneActivity extends AppCompatActivity {
 
-
+    private String phonenumber;
     private String verificationId;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
@@ -39,7 +43,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressbar);
         editText = findViewById(R.id.editTextCode);
 
-        String phonenumber = getIntent().getStringExtra("phonenumber");
+        phonenumber = getIntent().getStringExtra("phonenumber");
         sendVerificationCode(phonenumber);
 
         findViewById(R.id.buttonSignIn).setOnClickListener(new View.OnClickListener() {
@@ -65,16 +69,21 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         signInWithCredential(credential);
     }
 
-    private void signInWithCredential(PhoneAuthCredential credential) {
+    private void signInWithCredential(final PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-                            Intent intent = new Intent(VerifyPhoneActivity.this, ProfileActivity.class);
+                            Intent intent = new Intent(VerifyPhoneActivity.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
+                                User user = new User(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber(),true,1);
+                                SharedPrefManager.getInstance().setData("USER", user);
+                                FireBaseUserManager.getInstance().write(phonenumber);
+                            }
                             startActivity(intent);
 
                         } else {

@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">FeedTastic</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_home">My Page</string>
+    <string name="title_dashboard">Feed</string>
     <string name="title_notifications">Notifications</string>
     <string name="hello_blank_fragment">hello</string>
+    <string name="sziaFeed">Szia a  Feeden</string>
+    <string name="ad_title">Ad Title</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, an nostro verear eam, id ius libris maluisset. Suas solet definitionem mel eu.</string>
+    <string name="number">12</string>
+    <string name="lorem_long">X-Men crossed over with the animated series Spider-Man, when Spider-Man seeks out the X-Men\'s help to stave off his progressing mutation. In the abbreviated form of the Secret Wars storyline, the Beyonder and Madame Web selected Spider-Man to lead a team of heroes including Storm against a group of villains. An earlier draft of \"Secret Wars\" involved all of the X-Men, but transporting the voice cast to Los Angeles where production for the Spider-Man animated series was based from Canada had been too costly in previous crossovers, so the episode was re-written to include only Storm, whose actress, Iona Morris, lived in Los Angeles.[9][10] Hulk and She-Hulk were excluded from the episodes because the Incredible Hulk animated series .</string>
+    <string name="add_new">Add it!</string>
+    <string name="validationError">Please fill all the field correctly and don\'t forget to upload a picture</string>
+    <string name="my_comics">My Comics</string>
 </resources>

@@ -3,6 +3,7 @@ package com.example.aletta.feedtastic.base;
 import android.app.Application;
 
 import com.example.aletta.feedtastic.ResourceProvider;
+import com.example.aletta.feedtastic.util.FireBaseUserManager;
 import com.example.aletta.feedtastic.util.SharedPrefManager;
 
 
@@ -17,6 +18,8 @@ public  class BaseApplication extends Application {
         ResourceProvider resourceProvider = new ResourceProvider();
         resourceProvider.init(context);
         SharedPrefManager.init(context);
+        FireBaseUserManager.init(context);
+
     }
 
     public static Application getContext() {

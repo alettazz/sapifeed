@@ -79,6 +79,7 @@
         android:id="@+id/progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminateDrawable="@drawable/progress"
         android:layout_below="@id/buttonSignIn"
         android:layout_centerHorizontal="true"
         android:visibility="gone" />
